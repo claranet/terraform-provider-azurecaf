@@ -1,4 +1,4 @@
-module github.com/aztfmod/terraform-provider-azurecaf
+module github.com/claranet/terraform-provider-azurecaf
 
 go 1.20
 

@@ -24,7 +24,7 @@ Please, find below the steps that should be followed to contribute:
 
 2. Create an issue for the missing resource
 
-    If there is no [issue created already](https://github.com/aztfmod/terraform-provider-azurecaf/issues) for the implementation of this resource you should [create an issue](https://docs.github.com/en/free-pro-team@latest/github/managing-your-work-on-github/creating-an-issue) requesting the implementation of the resource.
+    If there is no [issue created already](https://github.com/claranet/terraform-provider-azurecaf/issues) for the implementation of this resource you should [create an issue](https://docs.github.com/en/free-pro-team@latest/github/managing-your-work-on-github/creating-an-issue) requesting the implementation of the resource.
 
 3. Check the requirements for your resource Name
 
