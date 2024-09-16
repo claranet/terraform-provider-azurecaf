@@ -1,19 +1,19 @@
-# Azure Terraform SRE - Terraform provider
+# Azure Terraform SRE - Terraform provider - CAF naming
 
-> :warning: This solution, offered by the Open-Source community, will no longer receive contributions from Microsoft.
+> :warning: This provider is a fork of https://github.com/aztfmod/terraform-provider-azurecaf.
 
 This provider implements a set of methodologies for naming convention implementation including the default Microsoft Cloud Adoption Framework for Azure recommendations as per <https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/naming-and-tagging>.
 
 ## Using the Provider
 
-You can simply consume the provider from the Terraform registry from the following URL: [https://registry.terraform.io/providers/aztfmod/azurecaf/latest](https://registry.terraform.io/providers/aztfmod/azurecaf/latest), then add it in your provider declaration as follow:
+You can simply consume the provider from the Terraform registry from the following URL: [https://registry.terraform.io/providers/claranet/azurecaf/latest](https://registry.terraform.io/providers/claranet/azurecaf/latest), then add it in your provider declaration as follow:
 
 ```hcl
 terraform {
   required_providers {
     azurecaf = {
-      source = "aztfmod/azurecaf"
-      version = "1.2.10"
+      source = "claranet/azurecaf"
+      version = "1.0.0"
     }
   }
 }
@@ -31,7 +31,7 @@ The azurecaf_name resource allows you to:
 This example outputs one name, the result of the naming convention query. The result attribute returns the name based on the convention and parameters input.
 
 The example generates a 23 characters name compatible with the specification for an Azure Resource Group
-dev-aztfmod-001
+dev-claranet-001
 
 ```hcl
 data "azurecaf_name" "rg_example" {
@@ -91,18 +91,18 @@ The comprehensive list of resource type can be found [here](./docs/resources/azu
 
 ## Building the provider
 
-Clone repository to: $GOPATH/src/github.com/aztfmod/terraform-provider-azurecaf
+Clone repository to: $GOPATH/src/github.com/claranet/terraform-provider-azurecaf
 
 ```
-mkdir -p $GOPATH/src/github.com/aztfmod; cd $GOPATH/src/github.com/aztfmod
-git clone https://github.com/aztfmod/terraform-provider-azurecaf.git
+mkdir -p $GOPATH/src/github.com/claranet; cd $GOPATH/src/github.com/claranet
+git clone https://github.com/claranet/terraform-provider-azurecaf.git
 
 ```
 
 Enter the provider directory and build the provider
 
 ```
-cd $GOPATH/src/github.com/aztfmod/terraform-provider-azurecaf
+cd $GOPATH/src/github.com/claranet/terraform-provider-azurecaf
 make build
 
 ```
@@ -139,22 +139,9 @@ to run the integration test
 make test
 ```
 
-## Related repositories
-
-| Repo                                                                                             | Description                                                |
-|--------------------------------------------------------------------------------------------------|------------------------------------------------------------|
-| [caf-terraform-landingzones](https://github.com/azure/caf-terraform-landingzones)                | landing zones repo with sample and core documentations     |
-| [rover](https://github.com/aztfmod/rover)                                                        | devops toolset for operating landing zones                 |
-| [azure_caf_provider](https://github.com/aztfmod/terraform-provider-azurecaf)                     | custom provider for naming conventions                     |
-| [module](https://registry.terraform.io/modules/aztfmod)                                          | official CAF module available in the Terraform registry    |
-
 ## Community
 
 Feel free to open an issue for feature or bug, or to submit a PR.
-
-In case you have any question, you can reach out to tf-landingzones at microsoft dot com.
-
-You can also reach us on [Gitter](https://gitter.im/aztfmod/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 ## Contributing
 
