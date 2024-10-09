@@ -7,6 +7,7 @@ provider "registry.terraform.io/aztfmod/azurecaf" {
   hashes = [
     "h1:RVsdmzqbjnTGKahU5vpC/qPklRWdSweUKPp+0A/6c60=",
     "h1:kSJLGlATua/zmW1Fzwrm47Mt2JjmIohohQ7x7+r4Wc4=",
+    "h1:mYyiClMYdRE6pIWgmRlvOVL58CC2yZOo1BiHuMjJap0=",
     "zh:1429bb7a873cdd69e324eaa96a3847ee9363d69ce360126b47b56e419863b024",
     "zh:29fe1eedb502e887b543c425b6fc9cb2cb5d3d1e69f830b6a4781dbe79d61ef1",
     "zh:340dd7ffebf3e3c5fd1d978166902c4544396a22853b6007f371aead8c92cbb3",

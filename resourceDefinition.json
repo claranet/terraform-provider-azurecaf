@@ -1526,12 +1526,12 @@
         "name": "azurerm_web_application_firewall_policy",
         "min_length": 1,
         "max_length": 80,
-        "validation_regex": "\"^[a-zA-Z0-9][a-zA-Z0-9]{0,78}[a-zA-Z0-9]$\"",
-        "scope": "global",
-        "slug": "wafw",
-        "dashes": false,
+        "validation_regex": "\"^[0-9a-zA-Z][0-9A-Za-z_.-]{0,78}[0-9a-zA-Z_]$\"",
+        "scope": "resourceGroup",
+        "slug": "waf",
+        "dashes": true,
         "lowercase": false,
-        "regex": "\"[^0-9A-Za-z]\""
+        "regex": "\"[^0-9A-Za-z_.-]\""
     },
     {
         "name": "azurerm_hdinsight_hadoop_cluster",
