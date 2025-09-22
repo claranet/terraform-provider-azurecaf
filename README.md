@@ -33,7 +33,7 @@ terraform {
   required_providers {
     azurecaf = {
       source = "claranet/azurecaf"
-      version = "~> 1.28"
+      version = "~> 1.2.28"
     }
   }
 }

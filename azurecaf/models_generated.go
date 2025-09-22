@@ -760,7 +760,7 @@ var ResourceMaps = map[string]string{
 	"vwc":          "azurerm_vmware_cluster",
 	"vwera":        "azurerm_vmware_express_route_authorization",
 	"vwpc":         "azurerm_vmware_private_cloud",
-	"waf":          "azurerm_web_application_firewall_policy",
+	"wafw":         "azurerm_web_application_firewall_policy",
 	"wvdws":        "azurerm_virtual_desktop_workspace",
 	"wwapp":        "azurerm_windows_web_app",
 }
