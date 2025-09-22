@@ -1,3 +1,8 @@
+// Package azurecaf provides data structures and constants for Azure Cloud Adoption Framework
+// naming conventions and resource definitions.
+//
+// This file contains the core constants and enumerations used throughout the provider
+// for defining naming conventions, resource types, and validation rules.
 package azurecaf
 
 import (
@@ -5,26 +10,53 @@ import (
 	"time"
 )
 
+// Naming convention constants define the different methodologies supported by the provider
+// for generating Azure resource names that comply with CAF guidelines.
 const (
 	// ConventionCafClassic applies the CAF recommended naming convention
+	// Format: [prefix]-[resource-slug]-[name]-[suffix]
 	ConventionCafClassic string = "cafclassic"
+
 	// ConventionCafRandom defines the CAF random naming convention
+	// Fills remaining space with random characters up to maximum length
 	ConventionCafRandom string = "cafrandom"
+
 	// ConventionRandom applies a random naming convention based on the max length of the resource
+	// Generates completely random names within Azure resource constraints
 	ConventionRandom string = "random"
-	// ConventionPassThrough defines the CAF random naming convention
+
+	// ConventionPassThrough validates existing names without modification
+	// Used for checking compliance of pre-existing resource names
 	ConventionPassThrough string = "passthrough"
 )
 
+// Regular expression patterns for cleaning input strings to ensure compliance
+// with Azure naming requirements. These patterns define which characters to remove
+// from input names for different Azure resource types.
 const (
-	alphanum    string = "[^0-9A-Za-z]"
-	alphanumh   string = "[^0-9A-Za-z-]"
-	alphanumu   string = "[^0-9A-Za-z_]"
-	alphanumhu  string = "[^0-9A-Za-z_-]"
+	// alphanum removes all characters except alphanumeric (a-z, A-Z, 0-9)
+	alphanum string = "[^0-9A-Za-z]"
+
+	// alphanumh allows alphanumeric characters and hyphens
+	alphanumh string = "[^0-9A-Za-z-]"
+
+	// alphanumu allows alphanumeric characters and underscores
+	alphanumu string = "[^0-9A-Za-z_]"
+
+	// alphanumhu allows alphanumeric characters, hyphens, and underscores
+	alphanumhu string = "[^0-9A-Za-z_-]"
+
+	// alphanumhup allows alphanumeric characters, hyphens, underscores, and periods
 	alphanumhup string = "[^0-9A-Za-z_.-]"
-	unicode     string = `[^-\w\._\(\)]`
-	invappi     string = "[%&\\?/]"     //appinisghts invalid character
-	invsqldb    string = "[<>*%&:\\/?]" //sql db invalid character
+
+	// unicode allows extended unicode characters, word characters, and common punctuation
+	unicode string = `[^-\w\._\(\)]`
+
+	// invappi defines invalid characters for Application Insights resources
+	invappi string = "[%&\\?/]"
+
+	// invsqldb defines invalid characters for SQL Database resources
+	invsqldb string = "[<>*%&:\\/?]"
 
 	//Need to find a way to filter beginning and end of string
 	//alphanumstartletter string = "\\A[^a-z][^0-9A-Za-z]"
@@ -62,7 +94,8 @@ var (
 
 // Generate a random value to add to the resource names
 func randSeq(length int, seed *int64) string {
-	if length == 0 {
+	// Handle invalid input: negative or zero length
+	if length <= 0 {
 		return ""
 	}
 	// initialize random seed
@@ -97,10 +130,13 @@ var Resources = map[string]ResourceStructure{
 	"appi":   {"application insights", "appi", 1, 260, false, invappi, "^[^%&\\?/. ][^%&\\?/]{0,258}[^%&\\?/. ]$", true, "resourceGroup"},
 	"ase":    {"app service environment", "ase", 2, 36, false, alphanumh, "^[0-9A-Za-z-]{2,36}$", true, "resourceGroup"},
 	"asr":    {"azure site recovery", "asr", 2, 50, false, alphanumh, "^[a-zA-Z][0-9A-Za-z-]{1,49}$", true, "resourceGroup"},
+	"dcr":    {"data collection rule", "dcr", 3, 44, false, alphanumhup, "^[a-zA-Z0-9][a-zA-Z0-9-]{1,42}[a-zA-Z0-9]$", true, "resourceGroup"},
 	"evh":    {"event hub", "evh", 1, 50, false, alphanumh, "^[a-zA-Z][0-9A-Za-z-]{0,48}[0-9a-zA-Z]$", true, "resourceGroup"},
 	"gen":    {"generic", "gen", 1, 24, false, alphanum, "^[0-9a-zA-Z]{1,24}$", true, "resourceGroup"},
 	"kv":     {"keyvault", "kv", 3, 24, true, alphanumh, "^[a-zA-Z][0-9A-Za-z-]{0,22}[0-9a-zA-Z]$", true, "resourceGroup"},
 	"la":     {"loganalytics", "la", 4, 63, false, alphanumh, "^[0-9a-zA-Z][0-9A-Za-z-]{3,61}[0-9a-zA-Z]$", true, "resourceGroup"},
+	"las":    {"log analytics solution", "las", 4, 63, false, alphanumh, "^[0-9a-zA-Z][0-9A-Za-z-]{2,61}[0-9a-zA-Z]$", true, "parent"},
+	"laqp":   {"log analytics query pack", "laqp", 4, 63, false, alphanumh, "^[0-9a-zA-Z][0-9A-Za-z-]{2,61}[0-9a-zA-Z]$", true, "parent"},
 	"nic":    {"network interface card", "nic", 1, 80, false, alphanumhup, "^[0-9a-zA-Z][0-9A-Za-z_.-]{0,78}[0-9a-zA-Z_]$", true, "resourceGroup"},
 	"nsg":    {"network security group", "nsg", 1, 80, false, alphanumhup, "^[0-9a-zA-Z][0-9A-Za-z_.-]{0,78}[0-9a-zA-Z_]$", true, "resourceGroup"},
 	"pip":    {"public ip address", "pip", 1, 80, false, alphanumhup, "^[0-9a-zA-Z][0-9A-Za-z_.-]{0,78}[0-9a-zA-Z_]$", true, "resourceGroup"},
@@ -136,10 +172,14 @@ var ResourcesMapping = map[string]ResourceStructure{
 	"aks_node_pool_linux":                     Resources["aksnpl"],
 	"aks_node_pool_windows":                   Resources["aksnpw"],
 	"azurerm_log_analytics_workspace":         Resources["la"],
+	"azurerm_log_analytics_solution":          Resources["las"],
+	"azurerm_log_analytics_query_pack":        Resources["laqp"],
+	"azurerm_monitor_data_collection_rule":    Resources["dcr"],
 	"azurerm_network_interface":               Resources["nic"],
 	"azurerm_network_security_group":          Resources["nsg"],
 	"azurerm_public_ip":                       Resources["pip"],
 	"azurerm_app_service_plan":                Resources["plan"],
+	"azurerm_service_plan":                    Resources["plan"],
 	"azurerm_resource_group":                  Resources["rg"],
 	"azurerm_subnet":                          Resources["snet"],
 	"azurerm_sql_server":                      Resources["sql"],
