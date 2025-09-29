@@ -2,24 +2,22 @@
 # Manual edits may be lost in future updates.
 
 provider "registry.terraform.io/aztfmod/azurecaf" {
-  version     = "1.2.28"
-  constraints = "1.2.28"
+  version     = "1.2.29"
+  constraints = ">= 1.2.0"
   hashes = [
-    "h1:RVsdmzqbjnTGKahU5vpC/qPklRWdSweUKPp+0A/6c60=",
-    "h1:kSJLGlATua/zmW1Fzwrm47Mt2JjmIohohQ7x7+r4Wc4=",
-    "h1:mYyiClMYdRE6pIWgmRlvOVL58CC2yZOo1BiHuMjJap0=",
-    "zh:1429bb7a873cdd69e324eaa96a3847ee9363d69ce360126b47b56e419863b024",
-    "zh:29fe1eedb502e887b543c425b6fc9cb2cb5d3d1e69f830b6a4781dbe79d61ef1",
-    "zh:340dd7ffebf3e3c5fd1d978166902c4544396a22853b6007f371aead8c92cbb3",
-    "zh:39edc570f3df0c55a3f5732d58bd7bea2d82a9df3e1bb3c04ab0b006b0a6e6fe",
-    "zh:3f5ffd5501fbea3acac04ef6337781dc51df9e9b076da86fcb275aec365f9042",
-    "zh:567872fb245c61d2dfb69f385636c3638db39c2a25161545b7cb9b5f8abced9f",
-    "zh:615c387b5459e7499bf5210e55ee83afcc77456ccaecc1f4d643e08582afe65b",
-    "zh:799dee6d755149ac7ee463e2f72f7b62fa1f6a7cf6d4d86dc4ae6592c03bcf8d",
-    "zh:902289eb256831406553da3b2409fbf03cd142385dd0392911207f0b5f6920b5",
-    "zh:914c0c9554f95d585b90f67e1df0080e8667cb9e7909e360de173b20b76e4625",
-    "zh:b6ab4bda123d57bbb98b6046c2aa7dea130be5988c3ac4f5be044ac5b51d2205",
-    "zh:d0f707439784b6b3c88b85a9d3261da793a618e5c55fa6af6f73175f4513b7c3",
-    "zh:d384404e1b6613e9cf75415c3e63d58a51c1b54406f6f62760608e0fcb476874",
+    "h1:pfk7fOcXQMUS2u8mlzWl6PPZJxBl2N2cm8nzIIQTwao=",
+    "zh:0639481c6a4790ae5c9bdb17b3c4a3284e3411654ff5cd44972e7ceccf6080ec",
+    "zh:1fed4b550e45cb0b13aa00ed9990aadcc1068a472d94eb7117afbe52b4249c39",
+    "zh:2443059d2350f980ca65399174cdebae6037c4f3c3ef28730127d122a1362645",
+    "zh:311b87b9209b02beaf27e12f4a9568b0898147416ef68d9805bb85551ba05bdc",
+    "zh:3bcd293f1c99003ac90484a6f1fc4dfbe4a29a137a64e32c9088f2750fbfa3e6",
+    "zh:44a3c9012c53460e92be98b44232b771e27ab6e8c4df551302fdbf57240fbc6e",
+    "zh:5558ed358c7987b6a8f09ced982161685334dcdb47f2e9db1116c70f0278d680",
+    "zh:689df1e10206fcca447488ac79b23732b983acaddf2dc08be8ade89e0da22638",
+    "zh:956981304bced7cf70a109e9e7448c20f93aaca237681da61f970f50b552201a",
+    "zh:a12a17d834dbe843ef9fc0d509f117092c2061c15298a3603a7109bc8b6d100a",
+    "zh:a3bc1555dbe1fd39753e7cd3f51f6d7864f9a5eb77ef4a94fca36ae808a1d7bf",
+    "zh:c27eacf058666af24bf32920d821c9f44a8e4cbdedf835eb540bd2c848e58073",
+    "zh:c925996bd0e82e30c4a83e493e1f0dd0f065815187da840d9d4abb4d58d44308",
   ]
 }

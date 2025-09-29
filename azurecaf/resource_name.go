@@ -10,19 +10,35 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
+// resourceNameV2 creates and returns the schema for the azurecaf_name resource (version 2).
+// This resource generates Azure-compliant resource names following Cloud Adoption Framework
+// naming conventions and Azure resource naming requirements.
+//
+// The resource supports:
+//   - Multiple naming conventions (CAF classic, CAF random, passthrough, etc.)
+//   - Custom prefixes and suffixes
+//   - Random character generation with configurable length
+//   - Input sanitization and validation
+//   - Multiple resource types in a single configuration
+//
+// This is an improved version that supersedes the original azurecaf_naming_convention resource.
 func resourceNameV2() *schema.Resource {
+	// Get all available resource types for validation
 	resourceMapsKeys := make([]string, 0, len(ResourceDefinitions))
 	for k := range ResourceDefinitions {
 		resourceMapsKeys = append(resourceMapsKeys, k)
 	}
+
 	return &schema.Resource{
 		Schema: map[string]*schema.Schema{
+			// Base name for the resource (will be sanitized according to Azure rules)
 			"name": {
 				Type:     schema.TypeString,
 				Optional: true,
 				ForceNew: true,
 				Default:  "",
 			},
+			// List of prefixes to add before the resource name
 			"prefixes": {
 				Type: schema.TypeList,
 				Elem: &schema.Schema{
@@ -32,6 +48,7 @@ func resourceNameV2() *schema.Resource {
 				Optional: true,
 				ForceNew: true,
 			},
+			// List of suffixes to add after the resource name
 			"suffixes": {
 				Type: schema.TypeList,
 				Elem: &schema.Schema{
@@ -41,6 +58,7 @@ func resourceNameV2() *schema.Resource {
 				Optional: true,
 				ForceNew: true,
 			},
+			// Number of random characters to append to the name
 			"random_length": {
 				Type:         schema.TypeInt,
 				Optional:     true,
@@ -124,6 +142,9 @@ func resourceName() *schema.Resource {
 				Upgrade: resourceNameStateUpgradeV2,
 				Version: 2,
 			},
+		},
+		Importer: &schema.ResourceImporter{
+			State: resourceNameImport,
 		},
 
 		Schema: map[string]*schema.Schema{
@@ -227,6 +248,59 @@ func resourceNameRead(d *schema.ResourceData, meta interface{}) error {
 
 func resourceNameDelete(d *schema.ResourceData, meta interface{}) error {
 	return nil
+}
+
+// resourceNameImport handles importing existing resource names.
+// Import ID format: <resource_type>:<existing_name>
+// Example: azurerm_storage_account:mystorageaccount123
+func resourceNameImport(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
+	importID := d.Id()
+
+	// Parse the import ID
+	parts := strings.Split(importID, ":")
+	if len(parts) != 2 {
+		return nil, fmt.Errorf("invalid import ID format, expected '<resource_type>:<existing_name>', got: %s", importID)
+	}
+
+	resourceType := parts[0]
+	existingName := parts[1]
+
+	// Validate the resource type exists
+	resource, err := getResource(resourceType)
+	if err != nil {
+		return nil, fmt.Errorf("unsupported resource type '%s': %w", resourceType, err)
+	}
+
+	// Validate the existing name against Azure naming rules for this resource type
+	validationRegEx, err := regexp.Compile(resource.ValidationRegExp)
+	if err != nil {
+		return nil, fmt.Errorf("invalid validation regex for resource type '%s': %w", resourceType, err)
+	}
+
+	if !validationRegEx.MatchString(existingName) {
+		return nil, fmt.Errorf("existing name '%s' does not comply with Azure naming requirements for resource type '%s'. Expected pattern: %s",
+			existingName, resourceType, resource.ValidationRegExp)
+	}
+
+	// Set the resource data for the imported resource
+	// We use passthrough mode to preserve the existing name as-is
+	d.Set("name", existingName)
+	d.Set("resource_type", resourceType)
+	d.Set("passthrough", true)
+
+	// Set empty slices for prefixes and suffixes since we can't reverse-engineer them
+	d.Set("prefixes", []string{})
+	d.Set("suffixes", []string{})
+	d.Set("resource_types", []string{})
+
+	// Set the result to match the imported name
+	d.Set("result", existingName)
+	d.Set("results", map[string]string{})
+
+	// Use the existing name as the Terraform resource ID
+	d.SetId(existingName)
+
+	return []*schema.ResourceData{d}, nil
 }
 
 func cleanSlice(names []string, resourceDefinition *ResourceStructure) []string {
@@ -381,7 +455,7 @@ func validateResourceType(resourceType string, resourceTypes []string) (bool, er
 		}
 	}
 	if len(errorStrings) > 0 {
-		return false, fmt.Errorf(strings.Join(errorStrings, "\n"))
+		return false, fmt.Errorf("%s", strings.Join(errorStrings, "\n"))
 	}
 	return true, nil
 }
@@ -451,6 +525,21 @@ func getNameResult(d *schema.ResourceData, meta interface{}) error {
 	useSlug := d.Get("use_slug").(bool)
 	randomLength := d.Get("random_length").(int)
 	randomSeed := int64(d.Get("random_seed").(int))
+
+	// Validate random_length parameter
+	if randomLength < 0 {
+		return fmt.Errorf("random_length must be non-negative, got: %d", randomLength)
+	}
+
+	// Validate against resource type constraints if resource_type is specified
+	if resourceType != "" {
+		if resource, exists := ResourceDefinitions[resourceType]; exists {
+			maxLen := resource.MaxLength
+			if randomLength > maxLen {
+				return fmt.Errorf("random_length (%d) exceeds maximum length for resource type %s (%d)", randomLength, resourceType, maxLen)
+			}
+		}
+	}
 
 	convention := ConventionCafClassic
 

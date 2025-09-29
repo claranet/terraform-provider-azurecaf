@@ -11,3 +11,27 @@ terraform
 **/*.log
 main
 __debug_bin
+
+# Backup files
+*.backup
+
+# Coverage reports
+coverage.out
+coverage.html
+naming_coverage.out
+naming_coverage.html
+
+# Build artifacts  
+run_examples.sh
+dist/
+
+# E2E test artifacts
+e2e/go.sum
+**/azurecaf-e2e-*
+e2e/**/.terraform
+e2e/**/*.tfstate
+e2e/**/*.tfstate.backup
+e2e/**/terraform.rc
+
+# Terraform configuration files
+**/terraform.rc
