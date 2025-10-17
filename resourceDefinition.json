@@ -874,21 +874,6 @@
         }
     },
     {
-        "name": "azurerm_containerGroups",
-        "min_length": 1,
-        "max_length": 63,
-        "validation_regex": "\"^[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]$\"",
-        "invalid-double-dash": true,
-        "scope": "resourceGroup",
-        "slug": "cg",
-        "dashes": true,
-        "lowercase": false,
-        "regex": "\"[^0-9A-Za-z-]\"",
-        "official": {
-            "resource": "Azure Containergroups"
-        }
-    },
-    {
         "name": "azurerm_container_app",
         "min_length": 1,
         "max_length": 32,
@@ -918,6 +903,22 @@
             "slug": "cae",
             "resource": "Container apps environment",
             "resource_provider_namespace": "Microsoft.App/managedEnvironments"
+        }
+    },
+    {
+        "name": "azurerm_container_group",
+        "min_length": 1,
+        "max_length": 63,
+        "validation_regex": "\"^[a-z0-9][a-z0-9-]{0,61}[a-z0-9]$\"",
+        "scope": "resourceGroup",
+        "slug": "ci",
+        "dashes": true,
+        "lowercase": true,
+        "regex": "\"[^0-9a-z-]\"",
+        "official": {
+            "slug": "ci",
+            "resource": "Azure Container Instance",
+            "resource_provider_namespace": "Microsoft.ContainerInstance/containerGroups"
         }
     },
     {

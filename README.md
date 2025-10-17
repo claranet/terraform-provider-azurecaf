@@ -674,7 +674,7 @@ This provider supports 395 Azure resource types. Here's the implementation statu
 |azurerm_consumption_budget_subscription | ✔ |
 |azurerm_container_app | ✔ |
 |azurerm_container_app_environment | ✔ |
-|azurerm_container_group | ❌ |
+|azurerm_container_group | ✔ |
 |azurerm_container_registry | ✔ |
 |azurerm_container_registry_webhook | ✔ |
 |azurerm_cosmosdb_account | ✔ |
